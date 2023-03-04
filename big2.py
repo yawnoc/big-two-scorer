@@ -55,7 +55,7 @@ class ScoreMaster:
     LINE_EXPLAINER = (
         'A line must have one of the following forms:\n'
         '    <yyyy>-<mm>-<dd>     # a date\n'
-       f'    F<threshold>         # a declaration of fry threshold (default {DEFAULT_FRY_THRESHOLD})\n'
+       f'    F=<threshold>        # a declaration of fry threshold (default {DEFAULT_FRY_THRESHOLD})\n'
         '    <P1> <P2> <P3> <P4>  # a list of player names (no hashes or leading digits)\n'
         '    <L1> <L2> <L3> <L4>  # a list of losses (number of cards with optional\n'
         '                         # suffix `t` for a player taking on all losses)\n'
@@ -176,7 +176,7 @@ class ScoreMaster:
         return re.fullmatch(
             pattern=fr'''
                 ^ [\s]*
-                F(?P<fry_threshold> [0-9]+ )
+                F=(?P<fry_threshold> [0-9]+ )
                 [\s]* (?: [#] .* )? $
             ''',
             string=line,
