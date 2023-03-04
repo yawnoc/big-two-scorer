@@ -11,7 +11,7 @@ Licensed under MIT No Attribution (MIT-0), see LICENSE.
 
 import unittest
 
-from big2 import get_duplicates
+from big2 import get_duplicates, robust_divide
 
 
 class TestBig2(unittest.TestCase):
@@ -21,7 +21,13 @@ class TestBig2(unittest.TestCase):
         self.assertEqual(get_duplicates([1, 1, 2, 3, 'x', 'y', 'x']), [1, 'x'])
         self.assertEqual(get_duplicates(['a', 'b', 'c', 'b']), ['b'])
 
+    def test_robust_divide(self):
+        self.assertEqual(robust_divide(0, 0), None)
+        self.assertEqual(robust_divide(1, 0), None)
+        self.assertAlmostEqual(robust_divide(1, 1), 1)
+        self.assertAlmostEqual(robust_divide(1, 2), 0.5)
+        self.assertAlmostEqual(robust_divide(100, 2), 50)
+
 
 if __name__ == '__main__':
     unittest.main()
-
