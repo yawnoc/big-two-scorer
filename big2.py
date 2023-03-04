@@ -242,6 +242,16 @@ class ScoreMaster:
         )
 
     def write_tsv(self, file_name):
+        players = self.player_from_name.values()
+
+        everyone = Player('*')
+        everyone.is_regular = True
+        everyone.game_count = sum(p.game_count for p in players)
+        everyone.win_count = sum(p.win_count for p in players)
+        everyone.fry_count = sum(p.fry_count for p in players)
+        everyone.real_losses = sum(p.real_losses for p in players)
+        everyone.net_score = sum(p.net_score for p in players)
+
         with open(file_name, 'w', encoding='utf-8') as file:
             writer = csv.writer(file, delimiter='\t', lineterminator=os.linesep)
             writer.writerow([
@@ -257,10 +267,8 @@ class ScoreMaster:
                 'real_losses_per_game',
                 'net_score_per_game',
             ])
-            for player in sorted(
-                self.player_from_name.values(),
-                key=lambda p: (not p.is_regular, p.real_losses_per_game)
-            ):
+            for player in sorted(players, key=lambda p: (not p.is_regular, p.real_losses_per_game)) + [everyone]:
+                player.update_averages()
                 writer.writerow([
                     player.name,
                     player.is_regular,
@@ -318,6 +326,12 @@ class Player:
         self.real_losses_per_game = 0
         self.net_score_per_game = 0
 
+    def update_averages(self):
+        self.win_fraction = robust_divide(self.win_count, self.game_count)
+        self.fry_fraction = robust_divide(self.fry_count, self.game_count)
+        self.real_losses_per_game = robust_divide(self.real_losses, self.game_count)
+        self.net_score_per_game = robust_divide(self.net_score, self.game_count)
+
 
 class Game:
     def __init__(self, game_number, date, fry_threshold, names, losses, winner_index, take_index):
@@ -343,10 +357,7 @@ class Game:
             player.real_losses += real_losses[index]
             player.net_score += net_score[index]
 
-            player.win_fraction = robust_divide(player.win_count, player.game_count)
-            player.fry_fraction = robust_divide(player.fry_count, player.game_count)
-            player.real_losses_per_game = robust_divide(player.real_losses, player.game_count)
-            player.net_score_per_game = robust_divide(player.net_score, player.game_count)
+            player.update_averages()
 
     @staticmethod
     def compute_real_losses(losses, fry_threshold, take_index):
