@@ -10,6 +10,7 @@ Licensed under MIT No Attribution (MIT-0), see LICENSE.
 """
 
 import argparse
+import csv
 import os
 import re
 import sys
@@ -123,7 +124,7 @@ class ScoreMaster:
                 winner_index = losses.index(0)
 
                 is_takes = tuple(
-                    game_line_match.group(f'loss_{i}') != ''
+                    game_line_match.group(f'take_{i}')
                     for i in range(0, 4)
                 )
                 if is_takes.count(True) > 1:
@@ -232,7 +233,8 @@ class ScoreMaster:
 
     def write_tsv(self, file_name):
         with open(file_name, 'w', encoding='utf-8') as file:
-            file.write('\t'.join([
+            writer = csv.writer(file, delimiter='\t', lineterminator=os.linesep)
+            writer.writerow([
                 'name',
                 'game_count',
                 'win_count',
@@ -243,9 +245,9 @@ class ScoreMaster:
                 'fry_fraction',
                 'real_losses_per_game',
                 'net_score_per_game',
-            ]))
+            ])
             for player in sorted(self.player_from_name.values(), key=lambda p: p.real_losses_per_game):
-                file.write('\t'.join([
+                writer.writerow([
                     player.name,
                     player.game_count,
                     player.win_count,
@@ -256,7 +258,7 @@ class ScoreMaster:
                     player.fry_fraction,
                     player.real_losses_per_game,
                     player.net_score_per_game,
-                ]))
+                ])
 
     class BadLineException(Exception):
         def __init__(self, line_number, message):
