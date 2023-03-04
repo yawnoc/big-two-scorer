@@ -87,7 +87,7 @@ class ScoreMaster:
             if threshold_line_match:
                 fry_threshold = int(threshold_line_match.group('fry_threshold'))
                 if fry_threshold < MIN_FRY_THRESHOLD:
-                    raise ScoreMaster.BadLineException(
+                    raise ScoreMaster.FryThresholdTooLowException(
                         line_number,
                         f'fry threshold {fry_threshold} is below {MIN_FRY_THRESHOLD}'
                     )
@@ -102,7 +102,7 @@ class ScoreMaster:
 
                 duplicate_names = get_duplicates(names)
                 if duplicate_names:
-                    raise ScoreMaster.BadLineException(
+                    raise ScoreMaster.DuplicatePlayerNamesException(
                         line_number,
                         f'duplicate player names {duplicate_names}',
                     )
@@ -121,7 +121,7 @@ class ScoreMaster:
                     for i in range(0, 4)
                 )
                 if losses.count(0) != 1:
-                    raise ScoreMaster.BadLineException(
+                    raise ScoreMaster.MultipleWinnersException(
                         line_number,
                         'game does not have exactly one winner (loss `0`)',
                     )
@@ -132,7 +132,7 @@ class ScoreMaster:
                     for i in range(0, 4)
                 )
                 if is_takes.count(True) > 1:
-                    raise ScoreMaster.BadLineException(
+                    raise ScoreMaster.MultipleTakesException(
                         line_number,
                         'multiple players taking on all losses (suffix `t`)',
                     )
@@ -142,7 +142,7 @@ class ScoreMaster:
                     take_index = None
 
                 if winner_index == take_index:
-                    raise ScoreMaster.BadLineException(
+                    raise ScoreMaster.WinnerTakesException(
                         line_number,
                         'winner (loss `0`) cannot take on all losses (suffix `t`)',
                     )
@@ -154,7 +154,7 @@ class ScoreMaster:
             if ScoreMaster.match_comment_line(line):
                 continue
 
-            raise ScoreMaster.BadLineException(
+            raise ScoreMaster.InvalidLineException(
                 line_number,
                 f'invalid line\n\n{ScoreMaster.LINE_EXPLAINER}'
             )
@@ -273,6 +273,24 @@ class ScoreMaster:
         def __init__(self, line_number, message):
             self.line_number = line_number
             self.message = message
+
+    class FryThresholdTooLowException(BadLineException):
+        pass
+
+    class DuplicatePlayerNamesException(BadLineException):
+        pass
+
+    class MultipleWinnersException(BadLineException):
+        pass
+
+    class MultipleTakesException(BadLineException):
+        pass
+
+    class WinnerTakesException(BadLineException):
+        pass
+
+    class InvalidLineException(BadLineException):
+        pass
 
 
 class Player:
