@@ -114,6 +114,12 @@ class ScoreMaster:
 
             game_line_match = ScoreMaster.match_game_line(line)
             if game_line_match:
+                if names is None:
+                    raise ScoreMaster.NoPlayersException(
+                        line_number,
+                        f'game losses declared without first declaring player names'
+                    )
+
                 game_number += 1
 
                 losses = tuple(
@@ -121,7 +127,7 @@ class ScoreMaster:
                     for i in range(0, 4)
                 )
                 if losses.count(0) != 1:
-                    raise ScoreMaster.MultipleWinnersException(
+                    raise ScoreMaster.NonSingleWinnerException(
                         line_number,
                         'game does not have exactly one winner (loss `0`)',
                     )
@@ -131,13 +137,13 @@ class ScoreMaster:
                     game_line_match.group(f'take_{i}')
                     for i in range(0, 4)
                 )
-                if is_takes.count(True) > 1:
+                if is_takes.count('t') > 1:
                     raise ScoreMaster.MultipleTakesException(
                         line_number,
                         'multiple players taking on all losses (suffix `t`)',
                     )
                 try:
-                    take_index = is_takes.index(True)
+                    take_index = is_takes.index('t')
                 except ValueError:
                     take_index = None
 
@@ -280,7 +286,10 @@ class ScoreMaster:
     class DuplicatePlayerNamesException(BadLineException):
         pass
 
-    class MultipleWinnersException(BadLineException):
+    class NoPlayersException(BadLineException):
+        pass
+
+    class NonSingleWinnerException(BadLineException):
         pass
 
     class MultipleTakesException(BadLineException):
