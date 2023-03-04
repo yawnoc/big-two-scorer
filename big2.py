@@ -312,7 +312,7 @@ class Game:
 
             player.game_count += 1
             player.win_count += 1 if index == self.winner_index else 0
-            player.fry_count += 1 if self.losses[index] > self.fry_threshold else 0
+            player.fry_count += 1 if self.losses[index] >= self.fry_threshold else 0
             player.real_losses += real_losses[index]
             player.net_score += net_score[index]
 
