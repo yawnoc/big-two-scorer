@@ -12,7 +12,7 @@ Licensed under MIT No Attribution (MIT-0), see LICENSE.
 import unittest
 
 from big2 import get_duplicates, robust_divide, compute_fry_aware_loss
-from big2 import ScoreMaster
+from big2 import ScoreMaster, Game
 
 
 class TestBig2(unittest.TestCase):
@@ -175,6 +175,24 @@ class TestBig2(unittest.TestCase):
             ScoreMaster.InvalidLineException,
             lambda scores_text: ScoreMaster.parse(scores_text),
             'A B 3C D',
+        )
+
+    def test_game_compute_real_losses(self):
+        self.assertEqual(
+            Game.compute_real_losses(losses=(0, 1, 2, 3), fry_threshold=10, take_index=None),
+            (0, 1, 2, 3),
+        )
+        self.assertEqual(
+            Game.compute_real_losses(losses=(0, 10, 11, 13), fry_threshold=10, take_index=None),
+            (0, 20, 22, 39),
+        )
+        self.assertEqual(
+            Game.compute_real_losses(losses=(0, 1, 2, 3), fry_threshold=10, take_index=1),
+            (0, 6, 0, 0),
+        )
+        self.assertEqual(
+            Game.compute_real_losses(losses=(0, 10, 11, 13), fry_threshold=10, take_index=2),
+            (0, 0, 81, 0),
         )
 
 
