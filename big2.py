@@ -31,6 +31,13 @@ def get_duplicates(iterable):
     return duplicate_items
 
 
+def robust_divide(dividend, divisor):
+    try:
+        return dividend / divisor
+    except ZeroDivisionError:
+        return None
+
+
 def compute_fry_aware_loss(loss, fry_threshold):
     if loss < fry_threshold:
         return loss
@@ -223,6 +230,34 @@ class ScoreMaster:
             flags=re.VERBOSE,
         )
 
+    def write_tsv(self, file_name):
+        with open(file_name, 'w', encoding='utf-8') as file:
+            file.write('\t'.join([
+                'name',
+                'game_count',
+                'win_count',
+                'fry_count',
+                'real_losses',
+                'net_score',
+                'win_fraction',
+                'fry_fraction',
+                'real_losses_per_game',
+                'net_score_per_game',
+            ]))
+            for player in sorted(self.player_from_name.values(), key=lambda p: p.real_losses_per_game):
+                file.write('\t'.join([
+                    player.name,
+                    player.game_count,
+                    player.win_count,
+                    player.fry_count,
+                    player.real_losses,
+                    player.net_score,
+                    player.win_fraction,
+                    player.fry_fraction,
+                    player.real_losses_per_game,
+                    player.net_score_per_game,
+                ]))
+
     class BadLineException(Exception):
         def __init__(self, line_number, message):
             self.line_number = line_number
@@ -232,11 +267,17 @@ class ScoreMaster:
 class Player:
     def __init__(self, name):
         self.name = name
+
         self.game_count = 0
         self.win_count = 0
         self.fry_count = 0
         self.real_losses = 0
         self.net_score = 0
+
+        self.win_fraction = 0
+        self.fry_fraction = 0
+        self.real_losses_per_game = 0
+        self.net_score_per_game = 0
 
 
 class Game:
@@ -260,6 +301,11 @@ class Game:
             player.fry_count += 1 if self.losses[index] > self.fry_threshold else 0
             player.real_losses += real_losses[index]
             player.net_score += net_score[index]
+
+            player.win_fraction = robust_divide(player.win_count, player.game_count)
+            player.fry_fraction = robust_divide(player.fry_count, player.game_count)
+            player.real_losses_per_game = robust_divide(player.real_losses, player.game_count)
+            player.net_score_per_game = robust_divide(player.net_score, player.game_count)
 
     @staticmethod
     def compute_real_losses(losses, fry_threshold, take_index):
@@ -347,6 +393,10 @@ def main():
         print(
             f'Error (`{scores_file_name}`, line {line_number}): {message}'
         )
+        sys.exit(1)
+
+    tsv_file_name = f'{scores_file_name}.tsv'
+    score_master.write_tsv(tsv_file_name)
 
 
 if __name__ == '__main__':
