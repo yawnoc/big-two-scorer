@@ -184,15 +184,25 @@ class TestBig2(unittest.TestCase):
         )
         self.assertEqual(
             Game.compute_real_losses(losses=(0, 10, 11, 13), fry_threshold=10, take_index=None),
-            (0, 20, 22, 39),
+            (0, 2*10, 2*11, 3*13),
         )
         self.assertEqual(
             Game.compute_real_losses(losses=(0, 1, 2, 3), fry_threshold=10, take_index=1),
-            (0, 6, 0, 0),
+            (0, 1+2+3, 0, 0),
         )
         self.assertEqual(
             Game.compute_real_losses(losses=(0, 10, 11, 13), fry_threshold=10, take_index=2),
-            (0, 0, 81, 0),
+            (0, 0, 2*10+2*11+3*13, 0),
+        )
+
+    def test_game_compute_net_scores(self):
+        self.assertEqual(
+            Game.compute_net_scores(real_losses=(0, 1, 2, 3)),
+            (1+2+3 - 3*0, 0+2+3 - 3*1, 0+1+3 - 3*2, 0+1+2 - 3*3)
+        )
+        self.assertEqual(
+            Game.compute_net_scores(real_losses=(0, 20, 22, 39)),
+            (20+22+39 - 3*0, 0+22+39 - 3*20, 0+20+39 - 3*22, 0+20+22 - 3*39)
         )
 
 
