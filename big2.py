@@ -70,6 +70,7 @@ class ScoreMaster:
         player_from_name = {}
         games = []
 
+        game_number = 0
         date = None
         fry_threshold = DEFAULT_FRY_THRESHOLD
         names = None
@@ -113,6 +114,8 @@ class ScoreMaster:
 
             game_line_match = ScoreMaster.match_game_line(line)
             if game_line_match:
+                game_number += 1
+
                 losses = tuple(
                     int(game_line_match.group(f'loss_{i}'))
                     for i in range(0, 4)
@@ -144,7 +147,7 @@ class ScoreMaster:
                         'winner (loss `0`) cannot take on all losses (suffix `t`)',
                     )
 
-                game = Game(date, fry_threshold, names, losses, winner_index, take_index)
+                game = Game(game_number, date, fry_threshold, names, losses, winner_index, take_index)
                 games.append(game)
                 continue
 
@@ -237,6 +240,7 @@ class ScoreMaster:
             writer = csv.writer(file, delimiter='\t', lineterminator=os.linesep)
             writer.writerow([
                 'name',
+                'is_regular',
                 'game_count',
                 'win_count',
                 'fry_count',
@@ -247,9 +251,13 @@ class ScoreMaster:
                 'real_losses_per_game',
                 'net_score_per_game',
             ])
-            for player in sorted(self.player_from_name.values(), key=lambda p: p.real_losses_per_game):
+            for player in sorted(
+                self.player_from_name.values(),
+                key=lambda p: (not p.is_regular, p.real_losses_per_game)
+            ):
                 writer.writerow([
                     player.name,
+                    player.is_regular,
                     player.game_count,
                     player.win_count,
                     player.fry_count,
@@ -270,6 +278,7 @@ class ScoreMaster:
 class Player:
     def __init__(self, name):
         self.name = name
+        self.is_regular = False
 
         self.game_count = 0
         self.win_count = 0
@@ -284,7 +293,8 @@ class Player:
 
 
 class Game:
-    def __init__(self, date, fry_threshold, names, losses, winner_index, take_index):
+    def __init__(self, game_number, date, fry_threshold, names, losses, winner_index, take_index):
+        self.game_number = game_number
         self.date = date
         self.fry_threshold = fry_threshold
         self.names = names
@@ -298,6 +308,7 @@ class Game:
 
         for index, name in enumerate(self.names):
             player = player_from_name[name]
+            player.is_regular = player.game_count >= self.game_number / 4
 
             player.game_count += 1
             player.win_count += 1 if index == self.winner_index else 0
