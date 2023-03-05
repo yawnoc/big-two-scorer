@@ -67,7 +67,7 @@ def make_plot(rows, x_variable, y_variable):
         axes.legend()
 
     axes.set(
-        title=f'{x_variable} vs {y_variable}',
+        title=f'Big Two (2013), Regular Players\n{x_variable} vs {y_variable}',
         xlabel=x_variable,
         ylabel=y_variable,
     )
