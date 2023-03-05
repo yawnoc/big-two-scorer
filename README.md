@@ -52,6 +52,32 @@ Each line must have one of the following forms:
 | `net_score_per_game` | `net_score` divided by `game_count` |
 
 
+## Simple example
+
+For the input scores file [`simple.txt`]:
+
+```
+a b c d
+0 11 12 13
+1 1 1 0
+
+x b c d
+3t 0 1 2  # x takes on all losses for not playing high enough
+0t 1 1 1  # x takes on all losses for failing to announce 'last card'
+```
+
+the output is the TSV file [`simple.txt.tsv`]:
+
+| name | is_regular | game_count | win_count | fry_count | real_losses | net_score | win_fraction | fry_fraction | real_losses_per_game | net_score_per_game |
+| - | - | - | - | - | - | - | - | - | - | - |
+| a | True | 2 | 1 | 0 | 1 | 84 | 0.5 | 0 | 0.5 | 42 |
+| x | True | 2 | 1 | 0 | 9 | -27 | 0.5 | 0 | 4.5 | -13.5 |
+| b | True | 4 | 1 | 1 | 23 | 5 | 0.25 | 0.25 | 5.75 | 1.25 |
+| c | True | 4 | 0 | 1 | 25 | -3 | 0 | 0.25 | 6.25 | -0.75 |
+| d | True | 4 | 1 | 1 | 39 | -59 | 0.25 | 0.25 | 9.75 | -14.75 |
+| * | True | 16 | 4 | 3 | 97 | 0 | 0.25 | 0.1875 | 6.0625 | 0 |
+
+
 ## Technical details
 
 ### Frying and 'real loss'
@@ -114,3 +140,5 @@ as a result of someone taking on all losses.
 
 
 [LICENSE]: LICENSE
+[`simple.txt`]: examples/simple.txt
+[`simple.txt.tsv`]: examples/simple.txt.tsv
