@@ -54,7 +54,7 @@ Each line must have one of the following forms:
 
 ## Simple example
 
-For the input scores file [`simple.txt`]:
+For the input scores file [`examples/simple.txt`]:
 
 ```
 a b c d
@@ -66,7 +66,7 @@ x b c d
 0t 1 1 1  # x takes on all losses for failing to announce 'last card'
 ```
 
-the output is the TSV file [`simple.txt.tsv`]:
+the output is the TSV file [`examples/simple.txt.tsv`]:
 
 | name | is_regular | game_count | win_count | fry_count | real_losses | net_score | win_fraction | fry_fraction | real_losses_per_game | net_score_per_game |
 | - | - | - | - | - | - | - | - | - | - | - |
@@ -139,6 +139,44 @@ even when 'real losses' are accrued to different players
 as a result of someone taking on all losses.
 
 
+## Scores from 2013
+
+I have transcribed the handwritten scores from 2013 into text format for the scorer.
+By running the scorer for each new day's worth of scores transcribed,
+I discovered several mistakes in the calculations at the time (apologies).
+
+See [`2013/big-two-2013.txt`] for details.
+
+Back then I didn't do zero-sum scoring. Using the scorer, I can now report that
+
+- C averaged +2.84 per game
+- H averaged +0.18 per game
+- All other regular players averaged a negative net score per game.
+
+See [`2013/big-two-2013.txt.tsv`] for details.
+
+Finally, I have generated some interesting plots with [`2013/plot.py`]:
+
+### 1. `real_losses_per_game` vs `win_fraction`
+
+![](2013/real_losses_per_game-vs-win_fraction.svg)
+
+### 2. `real_losses_per_game` vs `fry_fraction`
+
+![](2013/real_losses_per_game-vs-fry_fraction.svg)
+
+### 3. `real_losses_per_game` vs `net_score_per_game`
+
+![](2013/real_losses_per_game-vs-net_score_per_game.svg)
+
+### 4. `win_fraction` vs `net_score_per_game`
+
+![](2013/win_fraction-vs-net_score_per_game.svg)
+
+
 [LICENSE]: LICENSE
-[`simple.txt`]: examples/simple.txt
-[`simple.txt.tsv`]: examples/simple.txt.tsv
+[`examples/simple.txt`]: examples/simple.txt
+[`examples/simple.txt.tsv`]: examples/simple.txt.tsv
+[`2013/big-two-2013.txt`]: 2013/big-two-2013.txt
+[`2013/big-two-2013.txt.tsv`]: 2013/big-two-2013.txt.tsv
+[`2013/plot.py`]: 2013/plot.py
