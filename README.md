@@ -176,8 +176,6 @@ Finally, I have generated some interesting plots with [`2013/plot.py`]:
 
 ![](2013/real_losses_per_game-vs-net_score_per_game.svg)
 
-### 4. `win_fraction` vs `net_score_per_game`
-
 The red line is the theoretical relationship
 between 'net score' $s$ and 'real losses' $\ell$.
 With $T$ denoting the total 'real losses'
@@ -186,6 +184,8 @@ and $\ell^*$ denoting the 'real losses' for the average player, we have
 $$
   s = T - 4 \ell = 4 (\ell^* - \ell).
 $$
+
+### 4. `win_fraction` vs `net_score_per_game`
 
 ![](2013/win_fraction-vs-net_score_per_game.svg)
 
