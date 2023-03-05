@@ -78,7 +78,8 @@ class ScoreMaster:
         '                         # leading digits)\n'
         '    <L1> <L2> <L3> <L4>  # a list of losses (number of cards with optional\n'
         '                         # suffix `t` for a player taking on all losses)\n'
-        '    # <comment>          # a comment\n'
+        '    # <comment>          # a comment, also allowed at the end of the forms\n'
+        '                         # above\n'
         'All other lines are invalid.\n'
     )
 
