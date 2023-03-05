@@ -88,7 +88,6 @@ class ScoreMaster:
         player_from_name = {}
         games = []
 
-        game_number = 0
         date = None
         fry_threshold = DEFAULT_FRY_THRESHOLD
         names = None
@@ -138,8 +137,6 @@ class ScoreMaster:
                         f'game losses declared without first declaring player names'
                     )
 
-                game_number += 1
-
                 losses = tuple(
                     int(game_line_match.group(f'loss_{i}'))
                     for i in range(0, 4)
@@ -165,7 +162,7 @@ class ScoreMaster:
                 except ValueError:
                     take_index = None
 
-                game = Game(game_number, date, fry_threshold, names, losses, winner_index, take_index)
+                game = Game(date, fry_threshold, names, losses, winner_index, take_index)
                 games.append(game)
                 continue
 
@@ -350,8 +347,7 @@ class Player:
 
 
 class Game:
-    def __init__(self, game_number, date, fry_threshold, names, losses, winner_index, take_index):
-        self.game_number = game_number
+    def __init__(self, date, fry_threshold, names, losses, winner_index, take_index):
         self.date = date
         self.fry_threshold = fry_threshold
         self.names = names
