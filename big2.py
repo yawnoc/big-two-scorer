@@ -68,7 +68,7 @@ def compute_fry_aware_loss(loss, fry_threshold):
 
 class ScoreMaster:
     def __init__(self, scores_text):
-        self.player_from_name, self.games = ScoreMaster.parse(scores_text)
+        self.players, self.games = ScoreMaster.parse(scores_text)
 
     LINE_EXPLAINER = (
         'A line must have one of the following forms:\n'
@@ -185,7 +185,16 @@ class ScoreMaster:
         for game in games:
             game.update(player_from_name)
 
-        return player_from_name, games
+        players = list(player_from_name.values())
+        everyone = Player('*')
+        everyone.is_regular = True
+        everyone.game_count = sum(p.game_count for p in players)
+        everyone.win_count = sum(p.win_count for p in players)
+        everyone.fry_count = sum(p.fry_count for p in players)
+        everyone.real_losses = sum(p.real_losses for p in players)
+        everyone.net_score = sum(p.net_score for p in players)
+
+        return players + [everyone], games
 
     @staticmethod
     def match_date_line(line):
@@ -259,16 +268,6 @@ class ScoreMaster:
         )
 
     def write_tsv(self, file_name):
-        players = self.player_from_name.values()
-
-        everyone = Player('*')
-        everyone.is_regular = True
-        everyone.game_count = sum(p.game_count for p in players)
-        everyone.win_count = sum(p.win_count for p in players)
-        everyone.fry_count = sum(p.fry_count for p in players)
-        everyone.real_losses = sum(p.real_losses for p in players)
-        everyone.net_score = sum(p.net_score for p in players)
-
         with open(file_name, 'w', encoding='utf-8') as file:
             writer = csv.writer(file, delimiter='\t', lineterminator=os.linesep)
             writer.writerow([
@@ -284,7 +283,7 @@ class ScoreMaster:
                 'real_losses_per_game',
                 'net_score_per_game',
             ])
-            for player in sorted(players, key=lambda p: (not p.is_regular, p.real_losses_per_game)) + [everyone]:
+            for player in sorted(self.players, key=lambda p: (p.name == '*', -p.is_regular, p.real_losses_per_game)):
                 player.update_averages()
                 writer.writerow([
                     player.name,
