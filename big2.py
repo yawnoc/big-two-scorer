@@ -401,11 +401,10 @@ class Game:
         )
 
 
-DESCRIPTION = 'Score some games of Big Two (鋤大弟).'
-
-
 def parse_command_line_arguments():
-    argument_parser = argparse.ArgumentParser(description=DESCRIPTION)
+    argument_parser = argparse.ArgumentParser(
+        description='Score some games of Big Two (鋤大弟).'
+    )
     argument_parser.add_argument(
         '-v', '--version',
         action='version',
