@@ -278,7 +278,10 @@ class ScoreMaster:
                 'real_losses_per_game',
                 'net_score_per_game',
             ])
-            for player in sorted(self.players, key=lambda p: (p.name == '*', -p.is_regular, p.real_losses_per_game)):
+            for player in sorted(
+                self.players,
+                key=lambda p: (p.name == '*', -p.is_regular, p.real_losses_per_game, p.name),
+            ):
                 player.update_averages()
                 writer.writerow([
                     player.name,
