@@ -13,6 +13,7 @@ Licensed under MIT No Attribution (MIT-0), see LICENSE.
 import csv
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def read_scores(file_name):
@@ -46,6 +47,25 @@ def make_plot(rows, x_variable, y_variable):
             textcoords='offset points',
         )
 
+    if x_variable == 'real_losses_per_game' and y_variable == 'net_score_per_game':
+        x_everyone = x_values[-1]
+        x_min = min(x_values)
+        x_max = max(x_values)
+        theoretical_x_values = np.linspace(
+            x_min - 0.05 * (x_max - x_min),
+            x_max + 0.05 * (x_max - x_min),
+            2,
+        )
+        theoretical_y_values = 4 * (x_everyone - theoretical_x_values)
+
+        axes.plot(
+            theoretical_x_values,
+            theoretical_y_values,
+            color='red',
+            label=r'$s = 4(\ell* - \ell)$',
+        )
+        axes.legend()
+
     axes.set(
         title=f'{x_variable} vs {y_variable}',
         xlabel=x_variable,
@@ -62,6 +82,21 @@ def main():
         rows,
         x_variable='real_losses_per_game',
         y_variable='win_fraction',
+    )
+    make_plot(
+        rows,
+        x_variable='real_losses_per_game',
+        y_variable='fry_fraction',
+    )
+    make_plot(
+        rows,
+        x_variable='real_losses_per_game',
+        y_variable='net_score_per_game',
+    )
+    make_plot(
+        rows,
+        x_variable='win_fraction',
+        y_variable='net_score_per_game',
     )
 
 
