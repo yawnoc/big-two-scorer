@@ -3,4 +3,5 @@ a b c d
 1 1 1 0
 
 x b c d
-3t 0 1 2  # x takes on all losses
+3t 0 1 2  # x takes on all losses for not playing high enough
+0t 1 1 1  # x takes on all losses for failing to announce 'last card'

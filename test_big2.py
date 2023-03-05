@@ -169,17 +169,6 @@ class TestBig2(unittest.TestCase):
         except ScoreMaster.MultipleTakesException:
             self.fail('ScoreMaster.MultipleTakesException raised erroneously')
 
-    def test_score_master_winner_takes(self):
-        self.assertRaises(
-            ScoreMaster.WinnerTakesException,
-            lambda scores_text: ScoreMaster.parse(scores_text),
-            'A B C D \n 0t 1 2 3',
-        )
-        try:
-            ScoreMaster.parse('A B C D \n 0 1 2t 3')
-        except ScoreMaster.WinnerTakesException:
-            self.fail('ScoreMaster.WinnerTakesException raised erroneously')
-
     def test_score_master_invalid_line(self):
         self.assertRaises(
             ScoreMaster.InvalidLineException,
@@ -220,6 +209,10 @@ class TestBig2(unittest.TestCase):
         self.assertEqual(
             Game.compute_real_losses(losses=(0, 10, 11, 13), fry_threshold=10, take_index=None),
             (0, 2*10, 2*11, 3*13),
+        )
+        self.assertEqual(
+            Game.compute_real_losses(losses=(0, 1, 2, 3), fry_threshold=10, take_index=0),
+            (1+2+3, 0, 0, 0),
         )
         self.assertEqual(
             Game.compute_real_losses(losses=(0, 1, 2, 3), fry_threshold=10, take_index=1),

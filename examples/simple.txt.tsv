@@ -1,7 +1,7 @@
 name	is_regular	game_count	win_count	fry_count	real_losses	net_score	win_fraction	fry_fraction	real_losses_per_game	net_score_per_game
 a	True	2	1	0	1	84	0.5	0	0.5	42
-b	True	3	1	1	23	2	0.3333	0.3333	7.6667	0.6667
-c	True	3	0	1	25	-6	0	0.3333	8.3333	-2
-d	True	3	1	1	39	-62	0.3333	0.3333	13	-20.6667
-x	False	1	0	0	6	-18	0	0	6	-18
-*	True	12	3	3	94	0	0.25	0.25	7.8333	0
+x	True	2	1	0	9	-27	0.5	0	4.5	-13.5
+b	True	4	1	1	23	5	0.25	0.25	5.75	1.25
+c	True	4	0	1	25	-3	0	0.25	6.25	-0.75
+d	True	4	1	1	39	-59	0.25	0.25	9.75	-14.75
+*	True	16	4	3	97	0	0.25	0.1875	6.0625	0

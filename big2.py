@@ -165,12 +165,6 @@ class ScoreMaster:
                 except ValueError:
                     take_index = None
 
-                if winner_index == take_index:
-                    raise ScoreMaster.WinnerTakesException(
-                        line_number,
-                        'winner (loss `0`) cannot take on all losses (suffix `t`)',
-                    )
-
                 game = Game(game_number, date, fry_threshold, names, losses, winner_index, take_index)
                 games.append(game)
                 continue
@@ -318,9 +312,6 @@ class ScoreMaster:
         pass
 
     class MultipleTakesException(BadLineException):
-        pass
-
-    class WinnerTakesException(BadLineException):
         pass
 
     class InvalidLineException(BadLineException):
