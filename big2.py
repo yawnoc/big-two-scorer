@@ -421,7 +421,7 @@ def parse_command_line_arguments():
     )
     argument_parser.add_argument(
         'scores_file_name',
-        help='name of scores file',
+        help='name of scores file; output written to `{scores.txt}.tsv`',
         metavar='scores.txt',
     )
 

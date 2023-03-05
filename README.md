@@ -13,7 +13,7 @@ $ path/to/big2.py [-h] [-v] scores.txt
 Score some games of Big Two (鋤大弟).
 
 positional arguments:
-  scores.txt     name of scores file
+  scores.txt     name of scores file; output written to `{scores.txt}.tsv`
 
 optional arguments:
   -h, --help     show this help message and exit
