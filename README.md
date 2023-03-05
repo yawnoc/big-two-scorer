@@ -151,7 +151,8 @@ Back then I didn't do zero-sum scoring. Using the scorer, I can now report that
 
 - C averaged +2.84 per game
 - H averaged +0.18 per game
-- All other regular players averaged a negative net score per game.
+- All other regular players averaged a negative net score per game
+  (see [Plot&nbsp;3](#3-real_losses_per_game-vs-net_score_per_game)).
 
 See [`2013/big-two-2013.txt.tsv`] for details.
 
@@ -161,9 +162,15 @@ Finally, I have generated some interesting plots with [`2013/plot.py`]:
 
 ![](2013/real_losses_per_game-vs-win_fraction.svg)
 
+- C's strategy is to reduce the number of cards lost in every game,
+  at the expense of winning games.
+
 ### 2. `real_losses_per_game` vs `fry_fraction`
 
 ![](2013/real_losses_per_game-vs-fry_fraction.svg)
+
+- There looks to be a straight-line relationship here,
+  except for Js who is appears to be a lightning rod for fries.
 
 ### 3. `real_losses_per_game` vs `net_score_per_game`
 
@@ -171,7 +178,21 @@ Finally, I have generated some interesting plots with [`2013/plot.py`]:
 
 ### 4. `win_fraction` vs `net_score_per_game`
 
+The red line is the theoretical relationship
+between 'net score' $s$ and 'real losses' $\ell$.
+With $T$ denoting the total 'real losses'
+and $\ell^*$ denoting the 'real losses' for the average player, we have
+
+$$
+  s = T - 4 \ell = 4 (\ell^* - \ell).
+$$
+
 ![](2013/win_fraction-vs-net_score_per_game.svg)
+
+- Again, C's strategy is to reduce the number of cards lost in every game,
+  at the expense of winning games. This is a good strategy for performing
+  better than the average player (`*`), and hence doing well in 'net score'
+  or 'zero-sum' terms.
 
 
 [LICENSE]: LICENSE
