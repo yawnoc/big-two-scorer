@@ -68,7 +68,7 @@ def compute_fry_aware_loss(loss, fry_threshold):
 
 class ScoreMaster:
     def __init__(self, scores_text):
-        self.players, self.games = ScoreMaster.parse(scores_text)
+        self.players_including_everyone, self.games = ScoreMaster.parse(scores_text)
 
     LINE_EXPLAINER = (
         'A line must have one of the following forms:\n'
@@ -182,14 +182,19 @@ class ScoreMaster:
 
         players = list(player_from_name.values())
         everyone = Player('*')
-        everyone.is_regular = True
         everyone.game_count = sum(p.game_count for p in players)
         everyone.win_count = sum(p.win_count for p in players)
         everyone.fry_count = sum(p.fry_count for p in players)
         everyone.real_losses = sum(p.real_losses for p in players)
         everyone.net_score = sum(p.net_score for p in players)
 
-        return players + [everyone], games
+        players_including_everyone = players + [everyone]
+
+        total_game_count = len(games)
+        for player in players_including_everyone:
+            player.update_averages(total_game_count)
+
+        return players_including_everyone, games
 
     @staticmethod
     def match_date_line(line):
@@ -279,10 +284,9 @@ class ScoreMaster:
                 'net_score_per_game',
             ])
             for player in sorted(
-                self.players,
+                self.players_including_everyone,
                 key=lambda p: (p.name == '*', -p.is_regular, p.real_losses_per_game, p.name),
             ):
-                player.update_averages()
                 writer.writerow([
                     player.name,
                     player.is_regular,
@@ -324,7 +328,7 @@ class ScoreMaster:
 class Player:
     def __init__(self, name):
         self.name = name
-        self.is_regular = False
+        self.is_regular = None
 
         self.game_count = 0
         self.win_count = 0
@@ -337,7 +341,8 @@ class Player:
         self.real_losses_per_game = 0
         self.net_score_per_game = 0
 
-    def update_averages(self):
+    def update_averages(self, total_game_count):
+        self.is_regular = self.game_count >= total_game_count / 4
         self.win_fraction = robust_divide(self.win_count, self.game_count)
         self.fry_fraction = robust_divide(self.fry_count, self.game_count)
         self.real_losses_per_game = robust_divide(self.real_losses, self.game_count)
@@ -360,15 +365,12 @@ class Game:
 
         for index, name in enumerate(self.names):
             player = player_from_name[name]
-            player.is_regular = player.game_count >= self.game_number / 4
 
             player.game_count += 1
             player.win_count += 1 if index == self.winner_index else 0
             player.fry_count += 1 if self.losses[index] >= self.fry_threshold else 0
             player.real_losses += real_losses[index]
             player.net_score += net_score[index]
-
-            player.update_averages()
 
     @staticmethod
     def compute_real_losses(losses, fry_threshold, take_index):
