@@ -164,6 +164,8 @@ Finally, I have generated some interesting plots with [`2013/plot.py`]:
 
 - C's strategy is to reduce the number of cards lost in every game,
   at the expense of winning games.
+- T has a very good 'win fraction' compared to others with comparable 'real losses'.
+- Js has a very poor 'win fraction' compared to others with comparable 'real losses'
 
 ### 2. `real_losses_per_game` vs `fry_fraction`
 
@@ -193,6 +195,8 @@ $$
   at the expense of winning games. This is a good strategy for performing
   better than the average player (`*`), and hence doing well in 'net score'
   or 'zero-sum' terms.
+- Of course, the average player (`*`) wins a quarter of all games
+  and has a 'net score' of zero.
 
 
 [LICENSE]: LICENSE
