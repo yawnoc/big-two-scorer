@@ -160,23 +160,23 @@ Finally, I have generated some interesting plots with [`2013/plot.py`]:
 
 ### 1. `real_losses_per_game` vs `win_fraction`
 
-![](2013/real_losses_per_game-vs-win_fraction.svg)
+![Scatter plot.](2013/real_losses_per_game-vs-win_fraction.svg)
 
 - C's strategy is to reduce the number of cards lost in every game,
   at the expense of winning games.
 - T has a very good 'win fraction' compared to others with comparable 'real losses'.
-- Js has a very poor 'win fraction' compared to others with comparable 'real losses'
+- Js has a very poor 'win fraction' compared to others with comparable 'real losses'.
 
 ### 2. `real_losses_per_game` vs `fry_fraction`
 
-![](2013/real_losses_per_game-vs-fry_fraction.svg)
+![Scatter plot.](2013/real_losses_per_game-vs-fry_fraction.svg)
 
 - There looks to be a straight-line relationship here,
-  except for Js who is appears to be a lightning rod for fries.
+  except for Js who appears to be a lightning rod for fries.
 
 ### 3. `real_losses_per_game` vs `net_score_per_game`
 
-![](2013/real_losses_per_game-vs-net_score_per_game.svg)
+![Scatter plot with red line.](2013/real_losses_per_game-vs-net_score_per_game.svg)
 
 The red line is the theoretical relationship
 between 'net score' $s$ and 'real losses' $\ell$.
@@ -189,7 +189,7 @@ $$
 
 ### 4. `win_fraction` vs `net_score_per_game`
 
-![](2013/win_fraction-vs-net_score_per_game.svg)
+![Scatter plot.](2013/win_fraction-vs-net_score_per_game.svg)
 
 - Again, C's strategy is to reduce the number of cards lost in every game,
   at the expense of winning games. This is a good strategy for performing
