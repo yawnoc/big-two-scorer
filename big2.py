@@ -39,6 +39,23 @@ def robust_divide(dividend, divisor):
         return None
 
 
+def blunt(number, max_decimal_places=4):
+    """
+    Round a number to at most certain decimal places, as a string.
+    """
+    if number is None:
+        return None
+
+    if number == 0:
+        return '0'
+
+    max_decimal_places_format = f'%.{max_decimal_places}F'
+    nice_string = max_decimal_places_format % number
+    nice_string = re.sub(r'[.]?0*$', '', nice_string)
+
+    return nice_string
+
+
 def compute_fry_aware_loss(loss, fry_threshold):
     if loss < fry_threshold:
         return loss
@@ -277,10 +294,10 @@ class ScoreMaster:
                     player.fry_count,
                     player.real_losses,
                     player.net_score,
-                    player.win_fraction,
-                    player.fry_fraction,
-                    player.real_losses_per_game,
-                    player.net_score_per_game,
+                    blunt(player.win_fraction),
+                    blunt(player.fry_fraction),
+                    blunt(player.real_losses_per_game),
+                    blunt(player.net_score_per_game),
                 ])
 
     class BadLineException(Exception):
