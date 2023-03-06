@@ -156,7 +156,8 @@ Back then I didn't do zero-sum scoring. Using the scorer, I can now report that
 
 See [`2013/big-two-2013.txt.tsv`] for details.
 
-Finally, I have generated some interesting plots with [`2013/plot.py`]:
+Finally, I have generated some interesting plots for the regular players,
+using [`2013/plot.py`]:
 
 ### 1. `real_losses_per_game` vs `win_fraction`
 
