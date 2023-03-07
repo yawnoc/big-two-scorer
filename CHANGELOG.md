@@ -3,6 +3,8 @@
 
 ## [Unreleased]
 
+- Fixed bad newlines (extra CR) for TSV output on Windows
+
 
 ## [v0.1.0] First acceptable (2023-03-05)
 

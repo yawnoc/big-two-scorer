@@ -265,7 +265,7 @@ class ScoreMaster:
         )
 
     def write_tsv(self, file_name):
-        with open(file_name, 'w', encoding='utf-8') as file:
+        with open(file_name, 'w', encoding='utf-8', newline='') as file:
             writer = csv.writer(file, delimiter='\t', lineterminator=os.linesep)
             writer.writerow([
                 'name',
