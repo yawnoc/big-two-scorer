@@ -3,6 +3,7 @@
 
 ## [Unreleased]
 
+- Rewrote `blunt` formatting without percent operator
 - Fixed bad newlines (extra CR) for TSV output on Windows
 
 
