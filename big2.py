@@ -15,7 +15,7 @@ import os
 import re
 import sys
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 DEFAULT_FRY_THRESHOLD = MIN_FRY_THRESHOLD = 10
 TRIPLE_FRY_THRESHOLD = 13
 
