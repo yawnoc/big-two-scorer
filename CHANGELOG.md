@@ -3,6 +3,8 @@
 
 ## [Unreleased]
 
+- Immproved code formatting (minor changes)
+
 
 ## [v0.1.1] Niceties (2023-07-06)
 

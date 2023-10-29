@@ -70,16 +70,16 @@ class ScoreMaster:
         self.players_including_everyone, self.games = ScoreMaster.parse(scores_text)
 
     LINE_EXPLAINER = (
-        'A line must have one of the following forms:\n'
-        '    <yyyy>-<mm>-<dd>     # a date\n'
-       f'    F=<threshold>        # a declaration of fry threshold (default {DEFAULT_FRY_THRESHOLD})\n'
-        '    <P1> <P2> <P3> <P4>  # a list of player names (no hashes, asterisks, or\n'
-        '                         # leading digits)\n'
-        '    <L1> <L2> <L3> <L4>  # a list of losses (number of cards with optional\n'
-        '                         # suffix `t` for a player taking on all losses)\n'
-        '    # <comment>          # a comment, also allowed at the end of the forms\n'
-        '                         # above\n'
-        'All other lines are invalid.\n'
+        f'A line must have one of the following forms:\n'
+        f'    <yyyy>-<mm>-<dd>     # a date\n'
+        f'    F=<threshold>        # a declaration of fry threshold (default {DEFAULT_FRY_THRESHOLD})\n'
+        f'    <P1> <P2> <P3> <P4>  # a list of player names (no hashes, asterisks, or\n'
+        f'                         # leading digits)\n'
+        f'    <L1> <L2> <L3> <L4>  # a list of losses (number of cards with optional\n'
+        f'                         # suffix `t` for a player taking on all losses)\n'
+        f'    # <comment>          # a comment, also allowed at the end of the forms\n'
+        f'                         # above\n'
+        f'All other lines are invalid.\n'
     )
 
     @staticmethod
